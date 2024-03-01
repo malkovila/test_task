@@ -1,0 +1,80 @@
+version: "3"
+
+
+services:
+
+  finder:
+ 
+    build: /Finder
+
+
+    command: python ./main.py
+
+
+  errors:
+    
+
+    build: /Errors
+
+ 
+    command: python ./main.py
+
+
+    depends_on:
+      - finder
+  
+  analizator:
+    
+
+    build: /Analizator
+
+ 
+    command: python ./main.py
+
+ 
+    depends_on:
+      - finder
+  
+  generator:
+    
+
+    build: /Generator
+ 
+    command: python ./main.py
+
+ 
+    depends_on:
+      - finder
+  
+  readmaster:
+    
+
+    build: /ReadMaster
+
+    command: python ./main.py
+
+ 
+    depends_on:
+      - finder
+  
+
+
+  db:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=db_name
+      - MYSQL_ROOT_PASSWORD=qwerty
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    depends_on:
+      - finder
+      - analizator
+volumes:
+  db:
+    driver: local
