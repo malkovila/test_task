@@ -57,11 +57,15 @@ def main():
         f.close()
         
         for i in map:#обновление таблицы
-            with connection_db.cursor() as cursor:
+            try:
+                with connection_db.cursor() as cursor:
 
-                zapros_update = f"INSERT INTO count_of_words(word, count, path) VALUES ({i}, {map[i]}, {decoded_string});" 
-                cursor.execute(zapros_update)
-                connection_db.commit()
+                    zapros_update = f"INSERT INTO count_of_words(word, count, path) VALUES ({i}, {map[i]}, {decoded_string});" 
+                    cursor.execute(zapros_update)
+                    connection_db.commit()
+            except:
+                print("Вы не подключены к базе данных!")
+                print(map)
                 
 
     channel.basic_consume(queue='Parsing', on_message_callback=callback, auto_ack=True)
