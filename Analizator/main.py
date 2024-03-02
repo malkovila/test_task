@@ -66,6 +66,7 @@ def main():
             except:
                 print("Вы не подключены к базе данных!")
                 print(map)
+                break
                 
 
     channel.basic_consume(queue='Parsing', on_message_callback=callback, auto_ack=True)

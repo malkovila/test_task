@@ -17,7 +17,10 @@ def main():
         msg['From'] = 'ilamalkov886@gmail.com'
         msg['To'] = email
         s = smtplib.SMTP('localhost')
-        s.sendmail('ilamalkov886@gmail.com', [email], msg.as_string())
+        try:
+            s.sendmail('ilamalkov886@gmail.com', [email], msg.as_string())
+        except:
+            print("Почта недействительна.")
         s.quit()    
 
 
