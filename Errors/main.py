@@ -16,12 +16,13 @@ def main():
         msg['Subject'] = f'Error! Namme of file: {decoded_string}'
         msg['From'] = 'ilamalkov886@gmail.com'
         msg['To'] = email
-        s = smtplib.SMTP('localhost')
         try:
+            s = smtplib.SMTP('localhost')
             s.sendmail('ilamalkov886@gmail.com', [email], msg.as_string())
+            s.quit()
         except:
             print("Почта недействительна.")
-        s.quit()    
+                
 
 
     channel.basic_consume(queue='Errors', on_message_callback=callback, auto_ack=True)
